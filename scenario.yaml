@@ -1,0 +1,106 @@
+appInstallations:
+  ssh:
+    appName: SSH
+    appVersion: 0.1.0
+    id: 019a0c38-bec2-79eb-bb80-6070274ed750
+  testutilities:
+    appName: Test Utilities
+    appVersion: 1.0.0
+    id: 019a0c33-9eeb-7c6c-9573-bb73ab225ec6
+blocks:
+  - name: Execute Command
+    type:
+      appBlock:
+        block: executeCommand
+        appInstallation: ssh
+        schema: '{"order":0,"name":"Execute Command","category":"Execution","description":"Executes a single command on a remote host via SSH.","config":{},"hasOnInternalMessage":false,"inputs":{"default":{"order":0,"name":"Execute","description":"Execute the specified command on the remote host.","config":{"command":{"order":2,"name":"Command","description":"The command to execute.","type":{"type":"string"},"fixed":false,"required":true,"hasValidator":false,"fieldKey":"","sensitive":false},"host":{"order":0,"name":"Host","description":"Hostname or IP address to connect to.","type":{"type":"string"},"fixed":false,"required":true,"hasValidator":false,"fieldKey":"","sensitive":false},"port":{"order":1,"name":"Port","description":"SSH port for this connection.","type":{"type":"number"},"fixed":false,"required":true,"default":22,"hasValidator":false,"fieldKey":"","sensitive":false},"username":{"order":3,"name":"Username","description":"Override the default SSH username for this connection.","type":{"type":"string"},"fixed":false,"required":false,"hasValidator":false,"fieldKey":"","sensitive":false},"workingDirectory":{"order":4,"name":"Working Directory","description":"Working directory for the command.","type":{"type":"string"},"fixed":false,"required":false,"hasValidator":false,"fieldKey":"","sensitive":false}},"hasOnEvent":true}},"outputs":{"default":{"order":0,"name":"Command Executed","description":"Emitted when the command has been executed successfully.","default":true,"possiblePrimaryParents":["default"],"type":{"properties":{"duration":{"description":"Execution time in milliseconds.","type":"number"},"exitCode":{"description":"Exit code of the command.","type":"number"},"stderr":{"description":"Standard error from the command.","type":"string"},"stdout":{"description":"Standard output from the command.","type":"string"}},"required":["stdout","stderr","exitCode","duration"],"type":"object"}}},"signals":{},"hasOnSync":false,"hasOnDrain":false,"hasOnTimer":false}'
+        # The above schema can be used if you attempt to create this block without a valid app installation referenced.
+    position: [1437, 288]
+    inputs:
+      default:
+        config:
+          command: echo test
+          host: !expr |-
+            ref("signal.variables.host")
+          port: 2222
+  - name: Host Metadata
+    type:
+      appBlock:
+        block: hostMetadata
+        appInstallation: ssh
+        schema: '{"order":4,"name":"Host Metadata","category":"Host Info","description":"Retrieves and exposes host metadata as signals.","config":{"host":{"order":0,"name":"Host","description":"Hostname or IP address to connect to.","type":{"type":"string"},"fixed":false,"required":true,"hasValidator":false,"fieldKey":"","sensitive":false},"port":{"order":1,"name":"Port","description":"SSH port for this connection.","type":{"type":"number"},"fixed":false,"required":true,"default":22,"hasValidator":false,"fieldKey":"","sensitive":false},"username":{"order":2,"name":"Username","description":"Override the default SSH username for this connection.","type":{"type":"string"},"fixed":false,"required":false,"hasValidator":false,"fieldKey":"","sensitive":false}},"hasOnInternalMessage":false,"inputs":{},"outputs":{},"signals":{"architecture":{"order":3,"name":"Architecture","description":"System architecture (e.g., ''x86_64'').","sensitive":false},"hostname":{"order":0,"name":"Hostname","description":"The hostname of the remote system.","sensitive":false},"loadAverage":{"order":5,"name":"Load Average","description":"Load average with 1, 5, and 15 minute values.","sensitive":false},"memoryFree":{"order":7,"name":"Memory Free","description":"Free memory in bytes.","sensitive":false},"memoryTotal":{"order":6,"name":"Memory Total","description":"Total memory in bytes.","sensitive":false},"osRelease":{"order":2,"name":"OS Release","description":"OS version/release information.","sensitive":false},"osType":{"order":1,"name":"OS Type","description":"Operating system type (e.g., ''linux'', ''darwin'').","sensitive":false},"uptime":{"order":4,"name":"Uptime","description":"System uptime in seconds.","sensitive":false}},"hasOnSync":true,"hasOnDrain":false,"hasOnTimer":false}'
+        # The above schema can be used if you attempt to create this block without a valid app installation referenced.
+    position: [1158, 287]
+    config:
+      host: !expr |-
+        ref("signal.variables.host")
+      port: 2222
+  - name: Upload File
+    type:
+      appBlock:
+        block: uploadFile
+        appInstallation: ssh
+        schema: '{"order":2,"name":"Upload File","category":"File Transfer","description":"Uploads a file to the remote host via SCP/SFTP.","config":{},"hasOnInternalMessage":false,"inputs":{"default":{"order":0,"name":"Upload","description":"Upload the specified file to the remote host.","config":{"content":{"order":2,"name":"Content","description":"File content (base64 encoded for binary, plain text for text files).","type":{"type":"string"},"fixed":false,"required":true,"hasValidator":false,"fieldKey":"","sensitive":false},"destinationPath":{"order":3,"name":"Destination Path","description":"Full path where to save the file.","type":{"type":"string"},"fixed":false,"required":true,"hasValidator":false,"fieldKey":"","sensitive":false},"encoding":{"order":5,"name":"Encoding","description":"Content encoding: ''base64'' or ''text''.","type":{"enum":["base64","text"],"type":"string"},"fixed":false,"required":true,"default":"text","hasValidator":false,"fieldKey":"","sensitive":false},"host":{"order":0,"name":"Host","description":"Hostname or IP address to connect to.","type":{"type":"string"},"fixed":false,"required":true,"hasValidator":false,"fieldKey":"","sensitive":false},"permissions":{"order":6,"name":"Permissions","description":"File permissions in octal format (e.g., ''0644'').","type":{"type":"string"},"fixed":false,"required":false,"hasValidator":false,"fieldKey":"","sensitive":false},"port":{"order":1,"name":"Port","description":"SSH port for this connection.","type":{"type":"number"},"fixed":false,"required":true,"default":22,"hasValidator":false,"fieldKey":"","sensitive":false},"username":{"order":4,"name":"Username","description":"Override the default SSH username for this connection.","type":{"type":"string"},"fixed":false,"required":false,"hasValidator":false,"fieldKey":"","sensitive":false}},"hasOnEvent":true}},"outputs":{"default":{"order":0,"name":"File Uploaded","description":"Emitted when the file has been uploaded successfully.","default":true,"possiblePrimaryParents":["default"],"type":{"properties":{"path":{"description":"The destination path where file was uploaded.","type":"string"},"size":{"description":"Size of the uploaded file in bytes.","type":"number"}},"required":["path","size"],"type":"object"}}},"signals":{},"hasOnSync":false,"hasOnDrain":false,"hasOnTimer":false}'
+        # The above schema can be used if you attempt to create this block without a valid app installation referenced.
+    position: [1710, 287]
+    inputs:
+      default:
+        config:
+          content: nad;fj;afd
+          destinationPath: /tmp/test42
+          encoding: text
+          host: !expr |-
+            ref("signal.variables.host")
+          port: 2222
+  - name: Download File
+    type:
+      appBlock:
+        block: downloadFile
+        appInstallation: ssh
+        schema: '{"order":3,"name":"Download File","category":"File Transfer","description":"Downloads a file from the remote host via SCP/SFTP.","config":{},"hasOnInternalMessage":false,"inputs":{"default":{"order":0,"name":"Download","description":"Download the specified file from the remote host.","config":{"encoding":{"order":4,"name":"Encoding","description":"Content encoding: ''base64'' or ''text''.","type":{"enum":["base64","text"],"type":"string"},"fixed":false,"required":true,"default":"text","hasValidator":false,"fieldKey":"","sensitive":false},"host":{"order":0,"name":"Host","description":"Hostname or IP address to connect to.","type":{"type":"string"},"fixed":false,"required":true,"hasValidator":false,"fieldKey":"","sensitive":false},"port":{"order":1,"name":"Port","description":"SSH port for this connection.","type":{"type":"number"},"fixed":false,"required":true,"default":22,"hasValidator":false,"fieldKey":"","sensitive":false},"sourcePath":{"order":2,"name":"Source Path","description":"Full path of the file to download.","type":{"type":"string"},"fixed":false,"required":true,"hasValidator":false,"fieldKey":"","sensitive":false},"username":{"order":3,"name":"Username","description":"Override the default SSH username for this connection.","type":{"type":"string"},"fixed":false,"required":false,"hasValidator":false,"fieldKey":"","sensitive":false}},"hasOnEvent":true}},"outputs":{"default":{"order":0,"name":"File Downloaded","description":"Emitted when the file has been downloaded successfully.","default":true,"possiblePrimaryParents":["default"],"type":{"properties":{"content":{"description":"File content (encoded according to input).","type":"string"},"modifiedTime":{"description":"Last modified timestamp (ISO 8601 format).","type":"string"},"path":{"description":"The source path that was downloaded.","type":"string"},"permissions":{"description":"File permissions in octal format.","type":"string"},"size":{"description":"File size in bytes.","type":"number"}},"required":["content","path","size","permissions","modifiedTime"],"type":"object"}}},"signals":{},"hasOnSync":false,"hasOnDrain":false,"hasOnTimer":false}'
+        # The above schema can be used if you attempt to create this block without a valid app installation referenced.
+    position: [1710, 415]
+    inputs:
+      default:
+        links:
+          - block: Upload File
+            output: default
+        config:
+          encoding: text
+          host: !expr |-
+            ref("signal.variables.host")
+          port: 2222
+          sourcePath: /tmp/test42
+  - name: Execute Script
+    type:
+      appBlock:
+        block: executeScript
+        appInstallation: ssh
+        schema: '{"order":1,"name":"Execute Script","category":"Execution","description":"Uploads a script to a temporary location and executes it on the remote host.","config":{},"hasOnInternalMessage":false,"inputs":{"default":{"order":0,"name":"Execute","description":"Execute the specified script on the remote host.","config":{"host":{"order":0,"name":"Host","description":"Hostname or IP address to connect to.","type":{"type":"string"},"fixed":false,"required":true,"hasValidator":false,"fieldKey":"","sensitive":false},"interpreter":{"order":4,"name":"Interpreter","description":"Script interpreter (defaults to ''sh'').","type":{"type":"string"},"fixed":false,"required":false,"default":"sh","hasValidator":false,"fieldKey":"","sensitive":false},"port":{"order":1,"name":"Port","description":"SSH port for this connection.","type":{"type":"number"},"fixed":false,"required":true,"default":22,"hasValidator":false,"fieldKey":"","sensitive":false},"script":{"order":2,"name":"Script","description":"The script content to execute.","type":{"type":"string"},"fixed":false,"required":true,"hasValidator":false,"fieldKey":"","sensitive":false},"username":{"order":3,"name":"Username","description":"Override the default SSH username for this connection.","type":{"type":"string"},"fixed":false,"required":false,"hasValidator":false,"fieldKey":"","sensitive":false},"workingDirectory":{"order":5,"name":"Working Directory","description":"Working directory for script execution.","type":{"type":"string"},"fixed":false,"required":false,"hasValidator":false,"fieldKey":"","sensitive":false}},"hasOnEvent":true}},"outputs":{"default":{"order":0,"name":"Script Executed","description":"Emitted when the script has been executed successfully.","default":true,"possiblePrimaryParents":["default"],"type":{"properties":{"duration":{"description":"Execution time in milliseconds.","type":"number"},"exitCode":{"description":"Exit code of the script.","type":"number"},"stderr":{"description":"Standard error from the script.","type":"string"},"stdout":{"description":"Standard output from the script.","type":"string"}},"required":["stdout","stderr","exitCode","duration"],"type":"object"}}},"signals":{},"hasOnSync":false,"hasOnDrain":false,"hasOnTimer":false}'
+        # The above schema can be used if you attempt to create this block without a valid app installation referenced.
+    position: [1437, 416]
+    inputs:
+      default:
+        config:
+          host: !expr |-
+            ref("signal.variables.host")
+          interpreter: sh
+          port: 2222
+          script: !expr |-
+            `
+            echo papaya
+            echo test
+            ls -la
+            echo aaa
+            `
+  - name: Variables
+    type:
+      appBlock:
+        block: variables
+        appInstallation: testutilities
+        schema: '{"order":0,"name":"Variables","category":"Testing","description":"A block that creates signals from a variables configuration object.","config":{"variables":{"order":0,"name":"Variables","description":"A JSON object where each field will become a signal with the field''s value.","type":{"description":"An object containing key-value pairs that will be converted to signals","type":"object"},"fixed":false,"required":true,"default":{},"hasValidator":false,"fieldKey":"","sensitive":false}},"hasOnInternalMessage":false,"inputs":{},"outputs":{},"signals":{},"hasOnSync":true,"hasOnDrain":false,"hasOnTimer":false}'
+        # The above schema can be used if you attempt to create this block without a valid app installation referenced.
+    position: [1158, 126]
+    config:
+      variables:
+        host: 192.168.97.10
